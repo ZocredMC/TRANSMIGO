@@ -19,29 +19,29 @@
         </div>
         <div class="user-status-pill">
             <span class="status-dot"></span>
-            <span id="user-role-label">Cliente</span>
+            <span id="user-role-label">CLIENTE</span>
         </div>
     </header>
 
-    <!-- SIMULADOR / SELECTOR DE ROL -->
-    <div style="background: rgba(0,243,255,0.05); padding: 8px; text-align: center; border-bottom: 1px solid var(--border-color); font-size: 0.8rem;">
-        <label for="role-selector" style="margin-right: 6px; color: var(--text-muted);">Simular Sesión como:</label>
-        <select id="role-selector" onchange="switchUserRole(this.value)" style="background: var(--bg-card); color: var(--neon-cyan); border: 1px solid var(--border-color); padding: 4px 8px; border-radius: 6px;">
-            <option value="cliente">Cliente</option>
+    <!-- SELECTOR / SIMULADOR DE ROL INTERACTIVO -->
+    <div style="background: rgba(0, 243, 255, 0.08); padding: 10px; text-align: center; border-bottom: 1px solid var(--border-color); font-size: 0.85rem;">
+        <label for="role-selector" style="margin-right: 8px; color: var(--text-main); font-weight: 600;">Simular Sesión como:</label>
+        <select id="role-selector" onchange="switchUserRole(this.value)" style="background: var(--bg-card); color: var(--neon-cyan); border: 1px solid var(--neon-cyan); padding: 6px 12px; border-radius: 8px; font-weight: 700; outline: none;">
+            <option value="cliente" selected>Cliente</option>
             <option value="domiciliario">Domiciliario</option>
             <option value="admin">Administrador</option>
         </select>
     </div>
 
-    <!-- CONTENEDOR PRINCIPAL DE PANELES -->
+    <!-- CONTENEDOR PRINCIPAL -->
     <main class="app-container">
 
         <!-- ===================================================================
-             PANEL 1: VISTA CLIENTE
+             PANEL 1: CLIENTE
              =================================================================== -->
         <section id="panel-cliente" class="panel active">
             
-            <!-- Sub-sección: Hacer Pedido / Domicilio -->
+            <!-- Vista: Hacer Pedido -->
             <div id="cliente-view-pedido">
                 <div class="section-title logistica-urbana-title">Pedir Domicilio -</div>
                 
@@ -61,7 +61,7 @@
                     </div>
                 </div>
 
-                <!-- Formulario Dirección / Recogida y Destino -->
+                <!-- Formulario -->
                 <div class="form-card">
                     <div class="input-group">
                         <label>Origen / Dirección de Recogida</label>
@@ -78,12 +78,12 @@
                     <button class="btn btn-primary" onclick="calculateTariff()">Calcular Tarifa</button>
                 </div>
 
-                <!-- Mapa interactivo -->
+                <!-- Mapa -->
                 <div class="map-wrapper">
                     <div id="map"></div>
                 </div>
 
-                <!-- Resultado / Resumen de Tarifa -->
+                <!-- Resultado -->
                 <div id="result-card" class="result-card hidden">
                     <div class="result-details">
                         <div class="detail-item">
@@ -101,20 +101,19 @@
                 </div>
             </div>
 
-            <!-- Sub-sección: Soporte Oficial para Cliente -->
+            <!-- Vista: Soporte Cliente -->
             <div id="cliente-view-soporte" class="hidden">
-                <h2 class="section-title">Soporte Oficial y Atención</h2>
+                <h2 class="section-title">Soporte Oficial TRANSMIGO TULUÁ</h2>
                 <div class="form-card">
-                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 14px;">
-                        ¿Tienes dudas sobre tu servicio, cobros o quieres comunicarte con la administración central de <strong>TRANSMIGO TULUÁ</strong>?
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px;">
+                        ¿Tienes dudas sobre un domicilio, sugerencias o necesitas atención personalizada? Comunícate directamente con la administración central:
                     </p>
-                    
                     <div style="display: flex; flex-direction: column; gap: 12px;">
-                        <a href="https://wa.me/573000000000?text=Hola,%20necesito%20soporte%20con%20un%20domicilio" target="_blank" class="btn btn-whatsapp" style="text-decoration: none;">
+                        <a href="https://wa.me/573000000000?text=Hola,%20necesito%20soporte%20con%20un%20servicio%20en%20Tulu%C3%A1" target="_blank" class="btn btn-whatsapp" style="text-decoration: none;">
                             <span>📱 WhatsApp Administrador Directo</span>
                         </a>
                         <a href="tel:+573000000000" class="btn btn-primary" style="text-decoration: none; text-align: center;">
-                            <span>📞 Llamar a Línea de Atención</span>
+                            <span>📞 Llamar a Línea Central</span>
                         </a>
                     </div>
                 </div>
@@ -123,17 +122,17 @@
         </section>
 
         <!-- ===================================================================
-             PANEL 2: VISTA DOMICILIARIO
+             PANEL 2: DOMICILIARIO
              =================================================================== -->
         <section id="panel-domiciliario" class="panel">
             <h2 class="section-title">Panel Domiciliario - TRANSMIGO TULUÁ</h2>
 
-            <!-- Control Conexión / Estado Domiciliario -->
+            <!-- Toggle Conexión -->
             <div class="driver-controls-card">
                 <div class="toggle-status">
                     <div>
-                        <h3 id="driver-status-text">Estado: Inactivo</h3>
-                        <p id="driver-last-time">Última conexión: Hoy 10:00 AM</p>
+                        <h3 id="driver-status-text" style="color: var(--text-muted);">Estado: Inactivo</h3>
+                        <p id="driver-last-time">Última activación: Hoy 10:00 AM</p>
                     </div>
                     <label class="switch">
                         <input type="checkbox" id="toggle-active" onchange="toggleDriverStatus(this)">
@@ -142,108 +141,98 @@
                 </div>
             </div>
 
-            <!-- Navegación interna Domiciliario -->
-            <div style="display: flex; gap: 8px; margin-bottom: 14px;">
-                <button class="btn btn-primary" style="padding: 8px; font-size: 0.8rem;" onclick="switchDriverSubView('pendientes')">
-                    Pendientes <span id="badge-pendientes" style="background: red; border-radius: 50%; padding: 2px 6px; font-size: 0.7rem;">2</span>
-                </button>
-                <button class="btn btn-primary" style="padding: 8px; font-size: 0.8rem; background: var(--bg-card); border-color: var(--border-color);" onclick="switchDriverSubView('activos')">
-                    En Curso / Activos
-                </button>
-                <button class="btn btn-primary" style="padding: 8px; font-size: 0.8rem; background: var(--bg-card); border-color: var(--border-color);" onclick="switchDriverSubView('soporte')">
-                    Soporte Central
-                </button>
-            </div>
-
             <!-- Sub-vista 1: Pendientes por Aceptar -->
             <div id="driver-view-pendientes" class="orders-feed">
+                <h3 style="font-size: 0.9rem; margin-bottom: 8px; color: var(--neon-cyan);">Pedidos Pendientes Disponibles</h3>
                 <div class="form-card" style="border-left: 4px solid var(--neon-cyan);">
                     <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
                         <span style="font-weight: 700; color: var(--neon-cyan);">#ORD-1042</span>
                         <span style="font-weight: 800; color: var(--neon-green);">$8.000</span>
                     </div>
                     <p style="font-size: 0.85rem; margin-bottom: 4px;"><strong>Origen:</strong> Cra 12 # 22-10 (Centro)</p>
-                    <p style="font-size: 0.85rem; margin-bottom: 10px;"><strong>Destino:</strong> B/ Victoria Calle 30</p>
+                    <p style="font-size: 0.85rem; margin-bottom: 12px;"><strong>Destino:</strong> B/ Victoria Calle 30</p>
                     <button class="btn btn-whatsapp" onclick="acceptOrder('ORD-1042')">Aceptar Pedido</button>
                 </div>
             </div>
 
-            <!-- Sub-vista 2: Pedidos Activos en Curso -->
+            <!-- Sub-vista 2: Activos en Curso -->
             <div id="driver-view-activos" class="orders-feed hidden">
+                <h3 style="font-size: 0.9rem; margin-bottom: 8px; color: var(--warning-color);">Pedidos en Curso</h3>
                 <div class="form-card" style="border-left: 4px solid var(--warning-color);">
                     <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
                         <span style="font-weight: 700; color: var(--warning-color);">#ORD-1039 (En Camino)</span>
                         <span style="font-weight: 800; color: var(--neon-green);">$6.500</span>
                     </div>
                     <p style="font-size: 0.85rem; margin-bottom: 4px;"><strong>Cliente:</strong> Carlos Ruiz (+57 312...)</p>
-                    <p style="font-size: 0.85rem; margin-bottom: 10px;"><strong>Nota:</strong> Recoger paquete en Servientrega</p>
+                    <p style="font-size: 0.85rem; margin-bottom: 12px;"><strong>Nota:</strong> Recoger paquete en Servientrega</p>
                     <button class="btn btn-primary" onclick="completeOrder('ORD-1039')">Marcar como Entregado</button>
                 </div>
             </div>
 
-            <!-- Sub-vista 3: Soporte para Domiciliarios -->
+            <!-- Sub-vista 3: Soporte Central Domiciliario -->
             <div id="driver-view-soporte" class="hidden">
                 <div class="form-card">
-                    <h3 style="font-size: 0.95rem; margin-bottom: 8px;">Canal de Radio / Soporte Central</h3>
-                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px;">Comunícate inmediatamente si tienes fallas con el cliente, direcciones no encontradas o novedades de la vía.</p>
-                    <a href="https://wa.me/573000000000?text=Soporte%20Domiciliario:%20Tengo%20una%20novedad" class="btn btn-whatsapp">
-                        <span>Contactar Base Central / Admin</span>
+                    <h3 style="font-size: 0.95rem; margin-bottom: 8px; color: var(--neon-cyan);">Base Central / Soporte Domiciliarios</h3>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 14px;">
+                        Comunícate inmediatamente si tienes alguna novedad con la dirección o la tarifa del pedido.
+                    </p>
+                    <a href="https://wa.me/573000000000?text=Soporte%20Domiciliario:%20Tengo%20una%20novedad" class="btn btn-whatsapp" style="text-decoration: none;">
+                        <span>Contactar Administrador</span>
                     </a>
                 </div>
             </div>
         </section>
 
         <!-- ===================================================================
-             PANEL 3: VISTA ADMINISTRADOR (MONITOREO EN TIEMPO REAL)
+             PANEL 3: ADMINISTRADOR
              =================================================================== -->
         <section id="panel-admin" class="panel">
-            <h2 class="section-title">Panel Control y Monitoreo - TRANSMIGO TULUÁ</h2>
+            <h2 class="section-title">Monitoreo de Flota - TRANSMIGO TULUÁ</h2>
 
-            <!-- Métricas Globales -->
+            <!-- Métricas -->
             <div class="metrics-grid">
                 <div class="metric-card">
                     <span class="metric-title">Activos Ahora</span>
                     <span class="metric-value" style="color: var(--neon-green);">4 Domiciliarios</span>
                 </div>
                 <div class="metric-card">
-                    <span class="metric-title">En Carrera / Ocupados</span>
+                    <span class="metric-title">En Servicio / Ocupados</span>
                     <span class="metric-value" style="color: var(--warning-color);">2 Domiciliarios</span>
                 </div>
             </div>
 
-            <!-- Tabla/Lista de Monitoreo de Domiciliarios -->
+            <!-- Estado en Tiempo Real -->
             <div class="form-card">
-                <h3 style="font-size: 0.9rem; margin-bottom: 12px; color: var(--neon-cyan);">Estado de Flota en Tiempo Real</h3>
+                <h3 style="font-size: 0.9rem; margin-bottom: 12px; color: var(--neon-cyan);">Estado de Domiciliarios en Vivo</h3>
 
-                <div id="admin-fleet-list" style="display: flex; flex-direction: column; gap: 10px;">
-                    <!-- Domiciliario Item 1 -->
-                    <div style="background: var(--bg-card); padding: 10px; border-radius: 8px; border: 1px solid var(--border-color); font-size: 0.8rem;">
-                        <div style="display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 4px;">
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <!-- Item 1 -->
+                    <div style="background: var(--bg-card); padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); font-size: 0.85rem;">
+                        <div style="display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 6px;">
                             <span>Juan Pérez (Móvil 01)</span>
                             <span style="color: var(--warning-color);">● OCUPADO</span>
                         </div>
-                        <p style="color: var(--text-muted);">Tiempo en servicio actual: <strong>14 minutos</strong></p>
-                        <p style="color: var(--text-muted);">Última activación: Hoy a las 10:15 AM</p>
+                        <p style="color: var(--text-muted);">Tiempo en carrera actual: <strong>14 min</strong></p>
+                        <p style="color: var(--text-muted);">Conectado desde: 10:15 AM</p>
                     </div>
 
-                    <!-- Domiciliario Item 2 -->
-                    <div style="background: var(--bg-card); padding: 10px; border-radius: 8px; border: 1px solid var(--border-color); font-size: 0.8rem;">
-                        <div style="display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 4px;">
+                    <!-- Item 2 -->
+                    <div style="background: var(--bg-card); padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); font-size: 0.85rem;">
+                        <div style="display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 6px;">
                             <span>Andrés López (Móvil 04)</span>
                             <span style="color: var(--neon-green);">● DISPONIBLE</span>
                         </div>
-                        <p style="color: var(--text-muted);">Tiempo disponible: 5 minutos</p>
-                        <p style="color: var(--text-muted);">Última activación: Hoy a las 08:30 AM</p>
+                        <p style="color: var(--text-muted);">Disponible hace: 5 min</p>
+                        <p style="color: var(--text-muted);">Conectado desde: 08:30 AM</p>
                     </div>
 
-                    <!-- Domiciliario Item 3 -->
-                    <div style="background: var(--bg-card); padding: 10px; border-radius: 8px; border: 1px solid var(--border-color); font-size: 0.8rem; opacity: 0.6;">
-                        <div style="display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 4px;">
+                    <!-- Item 3 -->
+                    <div style="background: var(--bg-card); padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); font-size: 0.85rem; opacity: 0.6;">
+                        <div style="display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 6px;">
                             <span>Mateo Gómez (Móvil 09)</span>
                             <span style="color: var(--danger-color);">○ INACTIVO</span>
                         </div>
-                        <p style="color: var(--text-muted);">Última desconexión: Hoy a las 11:00 AM</p>
-                        <p style="color: var(--text-muted);">Sesión duró: 3 horas 00 mins</p>
+                        <p style="color: var(--text-muted);">Desconectado a las: 11:00 AM</p>
                     </div>
                 </div>
             </div>
@@ -251,20 +240,11 @@
 
     </main>
 
-    <!-- BARRA DE NAVEGACIÓN INFERIOR DINÁMICA -->
+    <!-- NAVEGACIÓN INFERIOR DINÁMICA -->
     <nav class="bottom-nav" id="main-bottom-nav">
-        <!-- Opciones del Cliente por Defecto -->
-        <button class="nav-item active" onclick="switchClientTab(this, 'pedido')">
-            <span class="nav-icon">🛵</span>
-            <span class="nav-label">Pedir Domicilio</span>
-        </button>
-        <button class="nav-item" onclick="switchClientTab(this, 'soporte')">
-            <span class="nav-icon">🎧</span>
-            <span class="nav-label">Soporte Oficial</span>
-        </button>
+        <!-- Renderizado dinámico desde JS -->
     </nav>
 
-    <!-- JS de Leaflet y Aplicación principal -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="app.js"></script>
 </body>
