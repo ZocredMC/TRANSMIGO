@@ -1,277 +1,75 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Transmigo</title>
-
-<style>
-
-/* =========================================================
-   RESET
-========================================================= */
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-html,
-body {
-    width: 100%;
-    min-height: 100%;
-}
-
-body {
-    background: #000812;
-    color: white;
-    font-family: Arial, Helvetica, sans-serif;
-}
-
-
-/* =========================================================
-   APP
-========================================================= */
-
-.app {
-    width: 100%;
-    max-width: 700px;
-    min-height: 100vh;
-    margin: auto;
-
-    background:
-        linear-gradient(
-            180deg,
-            #03182d 0%,
-            #020c1a 100%
-        );
-
-    overflow: hidden;
-
-    position: relative;
-}
-
-
-/* =========================================================
-   HEADER
-========================================================= */
-
-.hero {
-    height: 455px;
-
-    position: relative;
-    overflow: hidden;
-
-    background:
-        linear-gradient(
-            180deg,
-            rgba(1, 17, 36, 0.15),
-            rgba(2, 13, 27, 0.85)
-        ),
-
-        radial-gradient(
-            ellipse at 50% 75%,
-            #536d80 0%,
-            #29475e 30%,
-            #0a2945 58%,
-            #031426 100%
-        );
-}
-
-
-/* =========================================================
-   MENÚ
-========================================================= */
-
-.menu {
-    position: absolute;
-
-    top: 39px;
-    left: 27px;
-
-    width: 44px;
-    height: 44px;
-
-    border: none;
-    background: transparent;
-
-    z-index: 20;
-
-    cursor: pointer;
-}
-
-.menu span {
-    display: block;
-
-    width: 38px;
-    height: 4px;
-
-    margin: 6px 0;
-
-    border-radius: 10px;
-
-    background: #f2f5f8;
-}
-
-
-/* =========================================================
-   LOGO
-========================================================= */
-
-.logo {
-    position: absolute;
-
-    top: 91px;
-    left: 50%;
-
-    transform: translateX(-50%);
-
-    width: 625px;
-
-    z-index: 10;
-}
-
-
-/* símbolo */
-
-.logo-symbol {
-    position: absolute;
-
-    left: 25px;
-    top: 0;
-
-    width: 135px;
-    height: 100px;
-}
-
-
-/* T */
-
-.logo-t {
-    position: absolute;
-
-    left: 43px;
-    top: -13px;
-
-    font-size: 92px;
-
-    line-height: 1;
-
-    font-weight: 900;
-
-    font-style: italic;
-
-    color: #04d9ef;
-
-    transform: skewX(-12deg);
-}
-
-
-/* líneas */
-
-.speed {
-    position: absolute;
-
-    left: 0;
-
-    height: 8px;
-
-    border-radius: 20px;
-
-    background: #03dff3;
-
-    transform: skewX(-25deg);
-}
-
-.speed.one {
-    top: 27px;
-    width: 58px;
-}
-
-.speed.two {
-    top: 45px;
-    width: 43px;
-}
-
-.speed.three {
-    top: 63px;
-    width: 28px;
-}
-
-
-/* ubicación */
-
-.location-pin {
-    position: absolute;
-
-    left: 84px;
-    top: 19px;
-
-    width: 38px;
-    height: 48px;
-
-    background: white;
-
-    border-radius:
-        50%
-        50%
-        50%
-        0;
-
-    transform: rotate(-45deg);
-}
-
-.location-pin::after {
-    content: "";
-
-    position: absolute;
-
-    width: 12px;
-    height: 12px;
-
-    top: 13px;
-    left: 13px;
-
-    border-radius: 50%;
-
-    background: #0a3152;
-}
-
-
-/* nombre */
-
-.logo-name {
-    margin-left: 153px;
-
-    white-space: nowrap;
-
-    font-size: 51px;
-
-    line-height: 1;
-
-    letter-spacing: -2px;
-
-    font-weight: 900;
-
-    text-align: left;
-}
-
-.logo-name .white {
-    color: #f5f5f7;
-}
-
-.logo-name .cyan {
-    color: #04d7ed;
-}
-
-
-/* slogan */
-
-.logo-subtitle {
-    margin-left: 178px;
-
-    margin-top: 7px;
-
-    color: #d
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>TRANSMIGO</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: #020b18;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        .app {
+            width: 100%;
+            max-width: 700px;
+            min-height: 100vh;
+            margin: auto;
+            background: #031426;
+            overflow: hidden;
+        }
+
+        /* ================= HEADER ================= */
+
+        .header {
+            height: 440px;
+            position: relative;
+            overflow: hidden;
+
+            background:
+                linear-gradient(
+                    to bottom,
+                    #06223d,
+                    #163b55 55%,
+                    #071728
+                );
+        }
+
+        /* ================= MENU ================= */
+
+        .menu {
+            position: absolute;
+            top: 30px;
+            left: 25px;
+            z-index: 10;
+        }
+
+        .menu div {
+            width: 38px;
+            height: 4px;
+            background: white;
+            margin: 7px 0;
+            border-radius: 5px;
+        }
+
+        /* ================= LOGO ================= */
+
+        .logo {
+            position: absolute;
+            top: 85px;
+            left: 50%;
+
+            transform: translateX(-50%);
+
+            width: 620px
