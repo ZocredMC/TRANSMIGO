@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Logística Tuluá - Domicilios & Envíos</title>
+    
+    <!-- PWA & Mobile Settings -->
+    <meta name="theme-color" content="#0d1117">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="manifest" href="manifest.json">
+
+    <!-- Leaflet CSS (Mapas) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Estilos de la Aplicación -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Header / Barra de Navegación -->
+    <header class="app-header">
+        <div class="brand">
+            <span class="brand-badge">TULUÁ</span>
+            <h1>Logística Urbana</h1>
+        </div>
+        <div class="user-status-pill" id="userStatusPill">
+            <span class="status-dot"></span>
+            <span id="roleLabel">Cliente</span>
+        </div>
+    </header>
+
+    <main class="app-container">
+
+        <!-- ==================================================================== -->
+        <!-- PANEL CLIENTE -->
+        <!-- ==================================================================== -->
+        <section id="panelCliente" class="panel active">
+            
+            <h2 class="section-title">¿Qué deseas solicitar hoy?</h2>
+
+            <!-- Cuadrícula Táctil de Servicios -->
+            <div class="services-grid">
+                <button class="service-card active" data-service="comida">
+                    <div class="icon">🍔</div>
+                    <span>Comida</span>
+                </button>
+                <button class="service-card" data-service="paquete">
+                    <div class="icon">📦</div>
+                    <span>Paquetes</span>
+                </button>
+                <button class="service-card" data-service="consignacion">
+                    <div class="icon">💸</div>
+                    <span>Consignación</span>
+                </button>
+                <button class="service-card" data-service="el_favor">
+                    <div class="icon">⚡</div>
+                    <span>El Favor</span>
+                </button>
+                <button class="service-card" data-service="carrera">
+                    <div class="icon">🛵</div>
+                    <span>Carrera</span>
+                </button>
+                <button class="service-card" data-service="intermunicipal">
+                    <div class="icon">🚌</div>
+                    <span>Regional</span>
+                </button>
+            </div>
+
+            <!-- Formularios Dinámicos -->
+            <div class="form-card">
+                <div class="input-group">
+                    <label for="inputOrigen">Punto de Origen / Recogida</label>
+                    <input type="text" id="inputOrigen" placeholder="Ej: Barrio Salesiano, Cra 26 #28-10" autocomplete="off">
+                </div>
+
+                <div class="input-group" id="groupDestino">
+                    <label for="inputDestino">Punto de Destino / Entrega</label>
+                    <input type="text" id="inputDestino" placeholder="Ej: Barrio Alverne, Calle 25" autocomplete="off">
+                </div>
+
+                <!-- Campo exclusivo para Consignaciones -->
+                <div class="input-group hidden" id="groupMontoConsignar">
+                    <label for="inputMonto">Valor a Consignar / Pagar (COP)</label>
+                    <input type="number" id="inputMonto" placeholder="Ej: 50000" min="0" step="1000">
+                </div>
+
+                <div class="input-group">
+                    <label for="inputNotas">Notas Adicionales (Opcional)</label>
+                    <input type="text" id="inputNotas" placeholder="Ej: Tocar el timbre del apto 201">
+                </div>
+
+                <button class="btn btn-primary" id="btnCalcular">
+                    <span class="btn-text">Calcular Ruta y Tarifa</span>
+                </button>
+            </div>
+
+            <!-- Mapa Interactivo -->
+            <div class="map-wrapper">
+                <div id="map"></div>
+            </div>
+
+            <!-- Caja de Resultados y Confirmación -->
+            <div class="result-card hidden" id="resultBox">
+                <div class="result-details">
+                    <div class="detail-item">
+                        <span class="label">Distancia Estimada</span>
+                        <span class="value" id="resDistancia">0.0 km</span>
+                    </div>
+                    <div class="detail-item highlighted">
+                        <span class="label">Tarifa Total</span>
+                        <span class="value" id="resTarifa">$0 COP</span>
+                    </div>
+                </div>
+
+                <button class="btn btn-whatsapp" id="btnConfirmarWhatsApp">
+                    <span>Solicitar por WhatsApp</span>
+                </button>
+            </div>
+
+        </section>
+
+        <!-- ==================================================================== -->
+        <!-- PANEL DOMICILIARIO -->
+        <!-- ==================================================================== -->
+        <section id="panelDomiciliario" class="panel">
+            <div class="driver-controls-card">
+                <div class="toggle-status">
+                    <div>
+                        <h3>Estado de Servicio</h3>
+                        <p id="driverStatusText">Disponible para recibir pedidos</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="switchDisponible" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <h2 class="section-title">Bolsa de Pedidos Pendientes</h2>
+            <div class="orders-feed" id="listaPedidosPendientes">
+                <!-- Se puebla dinámicamente desde JS -->
+                <div class="empty-feed">Cargando pedidos en tiempo real...</div>
+            </div>
+        </section>
+
+        <!-- ==================================================================== -->
+        <!-- PANEL ADMINISTRADOR -->
+        <!-- ==================================================================== -->
+        <section id="panelAdmin" class="panel">
+            <h2 class="section-title">Dashboard Operativo</h2>
+            
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <span class="metric-title">Ventas del Día</span>
+                    <span class="metric-value" id="adminTotalVentas">$0 COP</span>
+                </div>
+                <div class="metric-card">
+                    <span class="metric-title">Pedidos Totales</span>
+                    <span class="metric-value" id="adminTotalPedidos">0</span>
+                </div>
+            </div>
+
+            <h3 class="subsection-title">Monitoreo de Personal</h3>
+            <div class="drivers-list" id="adminDriversList">
+                <!-- Lista de repartidores y disponibilidad -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Navegación Inferior (Barra Fija Multi-Rol) -->
+    <nav class="bottom-nav">
+        <button class="nav-item active" data-panel="panelCliente">
+            <span class="nav-icon">🗺️</span>
+            <span class="nav-label">Pedir</span>
+        </button>
+        <button class="nav-item" data-panel="panelDomiciliario">
+            <span class="nav-icon">🛵</span>
+            <span class="nav-label">Repartidor</span>
+        </button>
+        <button class="nav-item" data-panel="panelAdmin">
+            <span class="nav-icon">📊</span>
+            <span class="nav-label">Admin</span>
+        </button>
+    </nav>
+
+    <!-- Leaflet JS (Mapas) -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    
+    <!-- Módulos de JS -->
+    <script src="js/maps_coordinates.js"></script>
+    <script src="js/app.js"></script>
+</body>
+                  </html>
+                  
