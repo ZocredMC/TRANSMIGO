@@ -7,13 +7,19 @@
 
   <title>TRANSMIGO | Movemos lo que necesitas</title>
 
+  <!-- Tipografía -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="styles.css">
+  <!-- Iconos Font Awesome: no requiere cuenta ni código personal -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+  >
 
-  <script src="https://kit.fontawesome.com/REEMPLAZA_ESTE_KIT.js" crossorigin="anonymous"></script>
+  <!-- Estilos de TRANSMIGO -->
+  <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
@@ -22,15 +28,18 @@
 
     <!-- ENCABEZADO -->
     <header class="top-header">
+
       <button class="menu-button" aria-label="Abrir menú">
         <i class="fa-solid fa-bars"></i>
       </button>
 
-      <a class="brand" href="#">
+      <a class="brand" href="#" aria-label="TRANSMIGO - Inicio">
+
         <div class="brand-symbol">
           <span class="speed-line line-one"></span>
           <span class="speed-line line-two"></span>
           <span class="speed-line line-three"></span>
+
           <span class="brand-t">T</span>
           <i class="fa-solid fa-location-dot brand-pin"></i>
         </div>
@@ -39,18 +48,25 @@
           <div class="brand-name">
             TRANS<span>MIGO</span>
           </div>
-          <div class="brand-slogan">MOVEMOS LO QUE NECESITAS</div>
+
+          <div class="brand-slogan">
+            MOVEMOS LO QUE NECESITAS
+          </div>
         </div>
+
       </a>
 
       <div class="online-status">
         <span class="online-dot"></span>
         En línea
       </div>
+
     </header>
+
 
     <!-- BANNER PRINCIPAL -->
     <section class="hero">
+
       <div class="hero-landscape">
         <div class="mountain mountain-back"></div>
         <div class="mountain mountain-front"></div>
@@ -59,21 +75,34 @@
 
       <div class="hero-shade"></div>
 
+      <!-- Ilustración provisional del domiciliario -->
       <div class="hero-rider" aria-hidden="true">
+
         <div class="rider-glow"></div>
+
         <div class="rider-helmet">T</div>
+
         <div class="rider-body"></div>
+
         <div class="rider-bike">🏍️</div>
+
         <div class="delivery-box">
           <div class="mini-brand-symbol">T</div>
           <strong>TRANSMIGO</strong>
           <small>MOVEMOS LO QUE NECESITAS</small>
         </div>
+
       </div>
 
       <div class="hero-content">
-        <p class="welcome-text">Hola, bienvenido a</p>
-        <h1>TRANS<span>MIGO</span></h1>
+
+        <p class="welcome-text">
+          Hola, bienvenido a
+        </p>
+
+        <h1>
+          TRANS<span>MIGO</span>
+        </h1>
 
         <p class="hero-description">
           Selecciona el servicio que necesitas<br>
@@ -85,100 +114,147 @@
           <span>Tuluá, Valle del Cauca</span>
           <i class="fa-solid fa-chevron-right location-arrow"></i>
         </button>
+
       </div>
+
     </section>
 
-    <!-- SERVICIOS -->
+
+    <!-- CONTENIDO PRINCIPAL -->
     <main class="main-content">
 
+      <!-- SERVICIOS -->
       <section class="services-grid" aria-label="Servicios disponibles">
 
+        <!-- Carrera -->
         <button class="service-card service-ride">
+
           <div class="service-image ride-image">
             <i class="fa-solid fa-motorcycle"></i>
           </div>
+
           <div class="service-info">
             <h2>Carrera</h2>
             <p>Tu destino,<br>nuestro camino.</p>
           </div>
+
           <i class="fa-solid fa-chevron-right service-arrow"></i>
+
         </button>
 
+
+        <!-- Domicilio de comida -->
         <button class="service-card service-food">
+
           <div class="service-image food-image">
             <i class="fa-solid fa-utensils"></i>
           </div>
+
           <div class="service-info">
             <h2>Domicilio de comida</h2>
             <p>El sabor que<br>te gusta, en casa.</p>
           </div>
+
           <i class="fa-solid fa-chevron-right service-arrow"></i>
+
         </button>
 
+
+        <!-- Paquetería -->
         <button class="service-card service-parcel">
+
           <div class="service-image parcel-image">
             <i class="fa-solid fa-box"></i>
           </div>
+
           <div class="service-info">
             <h2>Domicilio de paquetería</h2>
             <p>Tus envíos,<br>en buenas manos.</p>
           </div>
+
           <i class="fa-solid fa-chevron-right service-arrow"></i>
+
         </button>
 
+
+        <!-- Transporte local -->
         <button class="service-card service-local">
+
           <div class="service-image local-image">
             <i class="fa-solid fa-truck-fast"></i>
           </div>
+
           <div class="service-info">
             <h2>Transporte tipo taximoto</h2>
             <p>Rápido, seguro<br>y confiable.</p>
           </div>
+
           <i class="fa-solid fa-chevron-right service-arrow"></i>
+
         </button>
 
+
+        <!-- Servicio intermunicipal -->
         <button class="service-card service-intercity">
+
           <div class="service-image intercity-image">
             <i class="fa-solid fa-route"></i>
           </div>
+
           <div class="service-info">
             <h2>Intermunicipal</h2>
             <p>Más lejos,<br>sin límites.</p>
           </div>
+
           <i class="fa-solid fa-chevron-right service-arrow"></i>
+
         </button>
 
+
+        <!-- Consignaciones -->
         <button class="service-card service-payment">
+
           <div class="service-image payment-image">
             <i class="fa-solid fa-money-bill-transfer"></i>
           </div>
+
           <div class="service-info">
             <h2>Consignaciones</h2>
             <p>Tu dinero,<br>siempre seguro.</p>
           </div>
+
           <i class="fa-solid fa-chevron-right service-arrow"></i>
+
         </button>
 
       </section>
 
+
       <!-- BANNER DE MARCA -->
       <section class="brand-banner">
+
         <div class="banner-brand">
+
           <div class="banner-symbol">T<span>•</span></div>
+
           <div>
             <strong>TRANS<span>MIGO</span></strong>
             <small>MOVEMOS LO QUE NECESITAS</small>
           </div>
+
         </div>
 
         <p class="banner-message">
           Más que un servicio,<br>
           somos tu mejor ruta.
         </p>
+
       </section>
+
 
       <!-- BENEFICIOS -->
       <section class="benefits">
+
         <div class="benefit">
           <i class="fa-solid fa-bolt"></i>
           <span>RÁPIDO</span>
@@ -198,10 +274,13 @@
           <i class="fa-solid fa-location-dot"></i>
           <span>SIEMPRE CONTIGO</span>
         </div>
+
       </section>
+
 
       <!-- UBICACIÓN -->
       <button class="city-card">
+
         <div class="city-pin">
           <i class="fa-solid fa-location-dot"></i>
         </div>
@@ -212,29 +291,19 @@
         </div>
 
         <i class="fa-solid fa-chevron-right city-arrow"></i>
+
       </button>
 
     </main>
 
+
     <!-- NAVEGACIÓN INFERIOR -->
     <nav class="bottom-nav" aria-label="Navegación principal">
+
       <button class="nav-item active">
         <i class="fa-solid fa-house"></i>
         <span>Inicio</span>
       </button>
 
       <button class="nav-item">
-        <i class="fa-solid fa-box"></i>
-        <span>Pedidos</span>
-      </button>
-
-      <button class="nav-item">
-        <i class="fa-solid fa-user"></i>
-        <span>Perfil</span>
-      </button>
-    </nav>
-
-  </div>
-
-</body>
-</html>
+        <i class="fa
