@@ -4,7 +4,7 @@
  */
 
 export const FareCalculator = {
-    // Configuración base de tarifas (fácilmente modificable o sincronizable con backend)
+    // Configuración base de tarifas (ajustable)
     config: {
         taxi: {
             baseFare: 4500,     // Tarifa mínima / Banderazo
@@ -33,16 +33,11 @@ export const FareCalculator = {
 
     /**
      * Calcula la tarifa estimada para un servicio
-     * @param {string} serviceType - 'taxi' | 'delivery' | 'cargo'
-     * @param {number} distanceKm - Distancia en kilómetros
-     * @param {number} durationMin - Tiempo estimado en minutos
-     * @param {Object} options - { isNight: bool, isPeakHour: bool, isHoliday: bool }
-     * @returns {Object} { total, breakdown }
      */
     calculateFare(serviceType = 'taxi', distanceKm = 0, durationMin = 0, options = {}) {
         const rates = this.config[serviceType] || this.config.taxi;
 
-        // 1. Cálculo base por distancia y tiempo
+        // 1. Cálculo base
         const distanceCost = distanceKm * rates.perKm;
         const timeCost = durationMin * rates.perMin;
         let subtotal = rates.baseFare + distanceCost + timeCost;
@@ -58,7 +53,6 @@ export const FareCalculator = {
         // 3. Garantizar Tarifa Mínima
         const finalTotal = Math.max(totalCalculated, rates.minFare);
 
-        // Retornar objeto detallado listo para pintar en la UI
         return {
             serviceType,
             total: Math.round(finalTotal),
@@ -75,7 +69,7 @@ export const FareCalculator = {
     },
 
     /**
-     * Formateador de moneda local (COP / Pesos)
+     * Formateador de moneda local (COP)
      */
     formatCurrency(amount) {
         return new Intl.NumberFormat('es-CO', {
