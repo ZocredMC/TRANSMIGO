@@ -2,201 +2,270 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Logística Tuluá - Domicilios & Envíos</title>
-    
-    <!-- PWA & Mobile Settings -->
-    <meta name="theme-color" content="#0d1117">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="manifest" href="manifest.json">
-
-    <!-- Leaflet CSS (Mapas) -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-    <!-- Estilos de la Aplicación -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TRANSMIGO TULUÁ - Logística y Domicilios</title>
+    <!-- CSS Leaflet para mapas -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <!-- Header / Barra de Navegación -->
+    <!-- HEADER / BARRA SUPERIOR -->
     <header class="app-header">
         <div class="brand">
-            <span class="brand-badge">TULUÁ</span>
-            <h1>Logística Urbana</h1>
+            <span class="brand-badge">LOGÍSTICA</span>
+            <h1>TRANSMIGO TULUÁ</h1>
         </div>
-        <div class="user-status-pill" id="userStatusPill">
+        <div class="user-status-pill">
             <span class="status-dot"></span>
-            <span id="roleLabel">Cliente</span>
+            <span id="user-role-label">Cliente</span>
         </div>
     </header>
 
+    <!-- SIMULADOR / SELECTOR DE ROL -->
+    <div style="background: rgba(0,243,255,0.05); padding: 8px; text-align: center; border-bottom: 1px solid var(--border-color); font-size: 0.8rem;">
+        <label for="role-selector" style="margin-right: 6px; color: var(--text-muted);">Simular Sesión como:</label>
+        <select id="role-selector" onchange="switchUserRole(this.value)" style="background: var(--bg-card); color: var(--neon-cyan); border: 1px solid var(--border-color); padding: 4px 8px; border-radius: 6px;">
+            <option value="cliente">Cliente</option>
+            <option value="domiciliario">Domiciliario</option>
+            <option value="admin">Administrador</option>
+        </select>
+    </div>
+
+    <!-- CONTENEDOR PRINCIPAL DE PANELES -->
     <main class="app-container">
 
-        <!-- ==================================================================== -->
-        <!-- PANEL CLIENTE -->
-        <!-- ==================================================================== -->
-        <section id="panelCliente" class="panel active">
+        <!-- ===================================================================
+             PANEL 1: VISTA CLIENTE
+             =================================================================== -->
+        <section id="panel-cliente" class="panel active">
             
-            <h2 class="section-title">¿Qué deseas solicitar hoy?</h2>
-
-            <!-- Cuadrícula Táctil de Servicios -->
-            <div class="services-grid">
-                <button class="service-card active" data-service="comida">
-                    <div class="icon">🍔</div>
-                    <span>Comida</span>
-                </button>
-                <button class="service-card" data-service="paquete">
-                    <div class="icon">📦</div>
-                    <span>Paquetes</span>
-                </button>
-                <button class="service-card" data-service="consignacion">
-                    <div class="icon">💸</div>
-                    <span>Consignación</span>
-                </button>
-                <button class="service-card" data-service="el_favor">
-                    <div class="icon">⚡</div>
-                    <span>El Favor</span>
-                </button>
-                <button class="service-card" data-service="carrera">
-                    <div class="icon">🛵</div>
-                    <span>Carrera</span>
-                </button>
-                <button class="service-card" data-service="intermunicipal">
-                    <div class="icon">🚌</div>
-                    <span>Regional</span>
-                </button>
-            </div>
-
-            <!-- Formularios Dinámicos -->
-            <div class="form-card">
-                <div class="input-group">
-                    <label for="inputOrigen">Punto de Origen / Recogida</label>
-                    <input type="text" id="inputOrigen" placeholder="Ej: Barrio Salesiano, Cra 26 #28-10" autocomplete="off">
-                </div>
-
-                <div class="input-group" id="groupDestino">
-                    <label for="inputDestino">Punto de Destino / Entrega</label>
-                    <input type="text" id="inputDestino" placeholder="Ej: Barrio Alverne, Calle 25" autocomplete="off">
-                </div>
-
-                <!-- Campo exclusivo para Consignaciones -->
-                <div class="input-group hidden" id="groupMontoConsignar">
-                    <label for="inputMonto">Valor a Consignar / Pagar (COP)</label>
-                    <input type="number" id="inputMonto" placeholder="Ej: 50000" min="0" step="1000">
-                </div>
-
-                <div class="input-group">
-                    <label for="inputNotas">Notas Adicionales (Opcional)</label>
-                    <input type="text" id="inputNotas" placeholder="Ej: Tocar el timbre del apto 201">
-                </div>
-
-                <button class="btn btn-primary" id="btnCalcular">
-                    <span class="btn-text">Calcular Ruta y Tarifa</span>
-                </button>
-            </div>
-
-            <!-- Mapa Interactivo -->
-            <div class="map-wrapper">
-                <div id="map"></div>
-            </div>
-
-            <!-- Caja de Resultados y Confirmación -->
-            <div class="result-card hidden" id="resultBox">
-                <div class="result-details">
-                    <div class="detail-item">
-                        <span class="label">Distancia Estimada</span>
-                        <span class="value" id="resDistancia">0.0 km</span>
+            <!-- Sub-sección: Hacer Pedido / Domicilio -->
+            <div id="cliente-view-pedido">
+                <div class="section-title logistica-urbana-title">Pedir Domicilio -</div>
+                
+                <!-- Cuadrícula de Servicios -->
+                <div class="services-grid">
+                    <div class="service-card active" onclick="selectService(this, 'carrera')">
+                        <span class="icon">🛵</span>
+                        <span>Carrera</span>
                     </div>
-                    <div class="detail-item highlighted">
-                        <span class="label">Tarifa Total</span>
-                        <span class="value" id="resTarifa">$0 COP</span>
+                    <div class="service-card" onclick="selectService(this, 'encargo')">
+                        <span class="icon">📦</span>
+                        <span>Encargo</span>
+                    </div>
+                    <div class="service-card" onclick="selectService(this, 'compras')">
+                        <span class="icon">🛒</span>
+                        <span>Compras</span>
                     </div>
                 </div>
 
-                <button class="btn btn-whatsapp" id="btnConfirmarWhatsApp">
-                    <span>Solicitar por WhatsApp</span>
-                </button>
+                <!-- Formulario Dirección / Recogida y Destino -->
+                <div class="form-card">
+                    <div class="input-group">
+                        <label>Origen / Dirección de Recogida</label>
+                        <input type="text" id="origin-input" placeholder="Ej: Calle 25 # 12-30, Tuluá">
+                    </div>
+                    <div class="input-group">
+                        <label>Destino / Entrega</label>
+                        <input type="text" id="destination-input" placeholder="Ej: Centro Comercial La 14">
+                    </div>
+                    <div class="input-group">
+                        <label>Detalles del servicio / Notas</label>
+                        <input type="text" id="notes-input" placeholder="Ej: Llevar cambio de $20.000 / Paquete frágil">
+                    </div>
+                    <button class="btn btn-primary" onclick="calculateTariff()">Calcular Tarifa</button>
+                </div>
+
+                <!-- Mapa interactivo -->
+                <div class="map-wrapper">
+                    <div id="map"></div>
+                </div>
+
+                <!-- Resultado / Resumen de Tarifa -->
+                <div id="result-card" class="result-card hidden">
+                    <div class="result-details">
+                        <div class="detail-item">
+                            <span class="label">Distancia Estimada</span>
+                            <span class="value" id="res-distance">0.0 km</span>
+                        </div>
+                        <div class="detail-item highlighted">
+                            <span class="label">Valor Total</span>
+                            <span class="value" id="res-price">$0</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-whatsapp" onclick="sendToWhatsApp()">
+                        <span>Solicitar Domiciliario por WhatsApp</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Sub-sección: Soporte Oficial para Cliente -->
+            <div id="cliente-view-soporte" class="hidden">
+                <h2 class="section-title">Soporte Oficial y Atención</h2>
+                <div class="form-card">
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 14px;">
+                        ¿Tienes dudas sobre tu servicio, cobros o quieres comunicarte con la administración central de <strong>TRANSMIGO TULUÁ</strong>?
+                    </p>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <a href="https://wa.me/573000000000?text=Hola,%20necesito%20soporte%20con%20un%20domicilio" target="_blank" class="btn btn-whatsapp" style="text-decoration: none;">
+                            <span>📱 WhatsApp Administrador Directo</span>
+                        </a>
+                        <a href="tel:+573000000000" class="btn btn-primary" style="text-decoration: none; text-align: center;">
+                            <span>📞 Llamar a Línea de Atención</span>
+                        </a>
+                    </div>
+                </div>
             </div>
 
         </section>
 
-        <!-- ==================================================================== -->
-        <!-- PANEL DOMICILIARIO -->
-        <!-- ==================================================================== -->
-        <section id="panelDomiciliario" class="panel">
+        <!-- ===================================================================
+             PANEL 2: VISTA DOMICILIARIO
+             =================================================================== -->
+        <section id="panel-domiciliario" class="panel">
+            <h2 class="section-title">Panel Domiciliario - TRANSMIGO TULUÁ</h2>
+
+            <!-- Control Conexión / Estado Domiciliario -->
             <div class="driver-controls-card">
                 <div class="toggle-status">
                     <div>
-                        <h3>Estado de Servicio</h3>
-                        <p id="driverStatusText">Disponible para recibir pedidos</p>
+                        <h3 id="driver-status-text">Estado: Inactivo</h3>
+                        <p id="driver-last-time">Última conexión: Hoy 10:00 AM</p>
                     </div>
                     <label class="switch">
-                        <input type="checkbox" id="switchDisponible" checked>
+                        <input type="checkbox" id="toggle-active" onchange="toggleDriverStatus(this)">
                         <span class="slider"></span>
                     </label>
                 </div>
             </div>
 
-            <h2 class="section-title">Bolsa de Pedidos Pendientes</h2>
-            <div class="orders-feed" id="listaPedidosPendientes">
-                <!-- Se puebla dinámicamente desde JS -->
-                <div class="empty-feed">Cargando pedidos en tiempo real...</div>
+            <!-- Navegación interna Domiciliario -->
+            <div style="display: flex; gap: 8px; margin-bottom: 14px;">
+                <button class="btn btn-primary" style="padding: 8px; font-size: 0.8rem;" onclick="switchDriverSubView('pendientes')">
+                    Pendientes <span id="badge-pendientes" style="background: red; border-radius: 50%; padding: 2px 6px; font-size: 0.7rem;">2</span>
+                </button>
+                <button class="btn btn-primary" style="padding: 8px; font-size: 0.8rem; background: var(--bg-card); border-color: var(--border-color);" onclick="switchDriverSubView('activos')">
+                    En Curso / Activos
+                </button>
+                <button class="btn btn-primary" style="padding: 8px; font-size: 0.8rem; background: var(--bg-card); border-color: var(--border-color);" onclick="switchDriverSubView('soporte')">
+                    Soporte Central
+                </button>
+            </div>
+
+            <!-- Sub-vista 1: Pendientes por Aceptar -->
+            <div id="driver-view-pendientes" class="orders-feed">
+                <div class="form-card" style="border-left: 4px solid var(--neon-cyan);">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <span style="font-weight: 700; color: var(--neon-cyan);">#ORD-1042</span>
+                        <span style="font-weight: 800; color: var(--neon-green);">$8.000</span>
+                    </div>
+                    <p style="font-size: 0.85rem; margin-bottom: 4px;"><strong>Origen:</strong> Cra 12 # 22-10 (Centro)</p>
+                    <p style="font-size: 0.85rem; margin-bottom: 10px;"><strong>Destino:</strong> B/ Victoria Calle 30</p>
+                    <button class="btn btn-whatsapp" onclick="acceptOrder('ORD-1042')">Aceptar Pedido</button>
+                </div>
+            </div>
+
+            <!-- Sub-vista 2: Pedidos Activos en Curso -->
+            <div id="driver-view-activos" class="orders-feed hidden">
+                <div class="form-card" style="border-left: 4px solid var(--warning-color);">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <span style="font-weight: 700; color: var(--warning-color);">#ORD-1039 (En Camino)</span>
+                        <span style="font-weight: 800; color: var(--neon-green);">$6.500</span>
+                    </div>
+                    <p style="font-size: 0.85rem; margin-bottom: 4px;"><strong>Cliente:</strong> Carlos Ruiz (+57 312...)</p>
+                    <p style="font-size: 0.85rem; margin-bottom: 10px;"><strong>Nota:</strong> Recoger paquete en Servientrega</p>
+                    <button class="btn btn-primary" onclick="completeOrder('ORD-1039')">Marcar como Entregado</button>
+                </div>
+            </div>
+
+            <!-- Sub-vista 3: Soporte para Domiciliarios -->
+            <div id="driver-view-soporte" class="hidden">
+                <div class="form-card">
+                    <h3 style="font-size: 0.95rem; margin-bottom: 8px;">Canal de Radio / Soporte Central</h3>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px;">Comunícate inmediatamente si tienes fallas con el cliente, direcciones no encontradas o novedades de la vía.</p>
+                    <a href="https://wa.me/573000000000?text=Soporte%20Domiciliario:%20Tengo%20una%20novedad" class="btn btn-whatsapp">
+                        <span>Contactar Base Central / Admin</span>
+                    </a>
+                </div>
             </div>
         </section>
 
-        <!-- ==================================================================== -->
-        <!-- PANEL ADMINISTRADOR -->
-        <!-- ==================================================================== -->
-        <section id="panelAdmin" class="panel">
-            <h2 class="section-title">Dashboard Operativo</h2>
-            
+        <!-- ===================================================================
+             PANEL 3: VISTA ADMINISTRADOR (MONITOREO EN TIEMPO REAL)
+             =================================================================== -->
+        <section id="panel-admin" class="panel">
+            <h2 class="section-title">Panel Control y Monitoreo - TRANSMIGO TULUÁ</h2>
+
+            <!-- Métricas Globales -->
             <div class="metrics-grid">
                 <div class="metric-card">
-                    <span class="metric-title">Ventas del Día</span>
-                    <span class="metric-value" id="adminTotalVentas">$0 COP</span>
+                    <span class="metric-title">Activos Ahora</span>
+                    <span class="metric-value" style="color: var(--neon-green);">4 Domiciliarios</span>
                 </div>
                 <div class="metric-card">
-                    <span class="metric-title">Pedidos Totales</span>
-                    <span class="metric-value" id="adminTotalPedidos">0</span>
+                    <span class="metric-title">En Carrera / Ocupados</span>
+                    <span class="metric-value" style="color: var(--warning-color);">2 Domiciliarios</span>
                 </div>
             </div>
 
-            <h3 class="subsection-title">Monitoreo de Personal</h3>
-            <div class="drivers-list" id="adminDriversList">
-                <!-- Lista de repartidores y disponibilidad -->
+            <!-- Tabla/Lista de Monitoreo de Domiciliarios -->
+            <div class="form-card">
+                <h3 style="font-size: 0.9rem; margin-bottom: 12px; color: var(--neon-cyan);">Estado de Flota en Tiempo Real</h3>
+
+                <div id="admin-fleet-list" style="display: flex; flex-direction: column; gap: 10px;">
+                    <!-- Domiciliario Item 1 -->
+                    <div style="background: var(--bg-card); padding: 10px; border-radius: 8px; border: 1px solid var(--border-color); font-size: 0.8rem;">
+                        <div style="display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 4px;">
+                            <span>Juan Pérez (Móvil 01)</span>
+                            <span style="color: var(--warning-color);">● OCUPADO</span>
+                        </div>
+                        <p style="color: var(--text-muted);">Tiempo en servicio actual: <strong>14 minutos</strong></p>
+                        <p style="color: var(--text-muted);">Última activación: Hoy a las 10:15 AM</p>
+                    </div>
+
+                    <!-- Domiciliario Item 2 -->
+                    <div style="background: var(--bg-card); padding: 10px; border-radius: 8px; border: 1px solid var(--border-color); font-size: 0.8rem;">
+                        <div style="display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 4px;">
+                            <span>Andrés López (Móvil 04)</span>
+                            <span style="color: var(--neon-green);">● DISPONIBLE</span>
+                        </div>
+                        <p style="color: var(--text-muted);">Tiempo disponible: 5 minutos</p>
+                        <p style="color: var(--text-muted);">Última activación: Hoy a las 08:30 AM</p>
+                    </div>
+
+                    <!-- Domiciliario Item 3 -->
+                    <div style="background: var(--bg-card); padding: 10px; border-radius: 8px; border: 1px solid var(--border-color); font-size: 0.8rem; opacity: 0.6;">
+                        <div style="display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 4px;">
+                            <span>Mateo Gómez (Móvil 09)</span>
+                            <span style="color: var(--danger-color);">○ INACTIVO</span>
+                        </div>
+                        <p style="color: var(--text-muted);">Última desconexión: Hoy a las 11:00 AM</p>
+                        <p style="color: var(--text-muted);">Sesión duró: 3 horas 00 mins</p>
+                    </div>
+                </div>
             </div>
         </section>
 
     </main>
 
-    <!-- Navegación Inferior (Barra Fija Multi-Rol) -->
-    <nav class="bottom-nav">
-        <button class="nav-item active" data-panel="panelCliente">
-            <span class="nav-icon">🗺️</span>
-            <span class="nav-label">Pedir</span>
-        </button>
-        <button class="nav-item" data-panel="panelDomiciliario">
+    <!-- BARRA DE NAVEGACIÓN INFERIOR DINÁMICA -->
+    <nav class="bottom-nav" id="main-bottom-nav">
+        <!-- Opciones del Cliente por Defecto -->
+        <button class="nav-item active" onclick="switchClientTab(this, 'pedido')">
             <span class="nav-icon">🛵</span>
-            <span class="nav-label">Repartidor</span>
+            <span class="nav-label">Pedir Domicilio</span>
         </button>
-        <button class="nav-item" data-panel="panelAdmin">
-            <span class="nav-icon">📊</span>
-            <span class="nav-label">Admin</span>
+        <button class="nav-item" onclick="switchClientTab(this, 'soporte')">
+            <span class="nav-icon">🎧</span>
+            <span class="nav-label">Soporte Oficial</span>
         </button>
     </nav>
 
-    <!-- Leaflet JS (Mapas) -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-    
-    <!-- Módulos de JS -->
-    <script src="js/maps_coordinates.js"></script>
-    <script src="js/app.js"></script>
+    <!-- JS de Leaflet y Aplicación principal -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="app.js"></script>
 </body>
-                  </html>
-                  
+</html>
