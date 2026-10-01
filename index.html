@@ -3,314 +3,91 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Transmigo App UI</title>
-  <!-- Iconos de FontAwesome para replicar los íconos del menú y opciones -->
+  <title>TRANSMIGO</title>
+  <link rel="stylesheet" href="styles.css">
+  <!-- Carga FontAwesome para los íconos -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    }
-
-    body {
-      background-color: #0d121d;
-      color: #ffffff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
-
-    /* Contenedor Principal (Pantalla Móvil) */
-    .app-container {
-      width: 360px;
-      height: 740px;
-      background-color: #0b111e;
-      border-radius: 30px;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      border: 2px solid #1a233a;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    }
-
-    /* Barra Superior de Estado */
-    .status-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px 20px 5px 20px;
-      font-size: 13px;
-      font-weight: 600;
-      z-index: 10;
-    }
-
-    .status-bar .icons i {
-      margin-left: 5px;
-      font-size: 11px;
-    }
-
-    /* Contenido con Desplazamiento */
-    .content {
-      flex: 1;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      padding-bottom: 20px;
-    }
-
-    /* Cabecera / Banner */
-    .header {
-      padding: 10px 20px;
-      position: relative;
-    }
-
-    .menu-icon {
-      font-size: 20px;
-      margin-bottom: 10px;
-      cursor: pointer;
-    }
-
-    .logo-container {
-      margin-bottom: 15px;
-    }
-
-    .logo-title {
-      color: #00d2ff;
-      font-size: 24px;
-      font-weight: 900;
-      letter-spacing: 1px;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    .logo-subtitle {
-      font-size: 9px;
-      letter-spacing: 1.5px;
-      color: #8c9ba5;
-      margin-top: 2px;
-      text-transform: uppercase;
-    }
-
-    .welcome-text {
-      margin-top: 15px;
-    }
-
-    .welcome-text h2 {
-      font-size: 16px;
-      font-weight: 400;
-      color: #e1e1e1;
-    }
-
-    .welcome-text h1 {
-      font-size: 22px;
-      color: #00d2ff;
-      font-weight: 800;
-    }
-
-    .welcome-text p {
-      font-size: 12px;
-      color: #a0aec0;
-      margin-top: 8px;
-      line-height: 1.3;
-    }
-
-    /* Rejilla de Servicios */
-    .services-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      padding: 15px 15px;
-    }
-
-    .service-card {
-      background: rgba(16, 26, 48, 0.6);
-      border: 1px solid #1c2c4c;
-      border-radius: 12px;
-      padding: 12px 6px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-
-    .service-card:hover {
-      background: rgba(24, 39, 70, 0.8);
-    }
-
-    .icon-wrapper {
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      border: 1.5px solid #00d2ff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 8px;
-      color: #00d2ff;
-      font-size: 18px;
-    }
-
-    .service-card span {
-      font-size: 11px;
-      color: #d1d5db;
-      line-height: 1.2;
-      font-weight: 500;
-    }
-
-    /* Botón Principal */
-    .action-container {
-      padding: 5px 20px 15px 20px;
-    }
-
-    .btn-submit {
-      width: 100%;
-      background: linear-gradient(90deg, #0072ff 0%, #00c6ff 100%);
-      border: none;
-      border-radius: 25px;
-      padding: 12px;
-      color: white;
-      font-weight: bold;
-      font-size: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      cursor: pointer;
-      box-shadow: 0 4px 15px rgba(0, 180, 255, 0.3);
-    }
-
-    /* Barra de Navegación Inferior */
-    .bottom-nav {
-      height: 60px;
-      background-color: #070b14;
-      border-top: 1px solid #161f33;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-    }
-
-    .nav-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      color: #64748b;
-      font-size: 10px;
-      text-decoration: none;
-      gap: 3px;
-    }
-
-    .nav-item i {
-      font-size: 16px;
-    }
-
-    .nav-item.active {
-      color: #00d2ff;
-    }
-  </style>
 </head>
 <body>
-
   <div class="app-container">
-    <!-- Barra de Estado Móvil -->
-    <div class="status-bar">
-      <span>9:41</span>
-      <div class="icons">
-        <i class="fa-solid fa-signal"></i>
-        <i class="fa-solid fa-wifi"></i>
-        <i class="fa-solid fa-battery-full"></i>
+    
+    <!-- Encabezado / Menú -->
+    <header class="header">
+      <button class="menu-btn" aria-label="Menú">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </header>
+
+    <!-- Banner Principal -->
+    <section class="hero-section">
+      <div class="logo-container">
+        <!-- Reemplazar con la imagen del logo original si la tienes -->
+        <h1 class="logo-text"><span class="logo-t">T</span> TRANSMIGO<sup>®</sup></h1>
+        <p class="logo-subtext">MOVEMOS LO QUE NECESITAS</p>
       </div>
+
+      <div class="welcome-text">
+        <h2>Hola, bienvenido a</h2>
+        <h1 class="brand-title">TRANSMIGO<sup>®</sup></h1>
+        <p>Selecciona el servicio que necesitas y nosotros nos encargamos del resto.</p>
+      </div>
+    </section>
+
+    <!-- Grid de Servicios -->
+    <section class="services-grid">
+      <div class="service-card">
+        <div class="icon-circle">
+          <i class="fa-solid fa-motorcycle"></i>
+        </div>
+        <span>Carrera</span>
+      </div>
+
+      <div class="service-card">
+        <div class="icon-circle">
+          <i class="fa-solid fa-utensils"></i>
+        </div>
+        <span>Domicilio de comida</span>
+      </div>
+
+      <div class="service-card">
+        <div class="icon-circle">
+          <i class="fa-solid fa-box"></i>
+        </div>
+        <span>Domicilio de paquetería</span>
+      </div>
+
+      <div class="service-card">
+        <div class="icon-circle">
+          <i class="fa-solid fa-truck-pickup"></i>
+        </div>
+        <span>Transporte tipo taximoto</span>
+      </div>
+
+      <div class="service-card">
+        <div class="icon-circle">
+          <i class="fa-solid fa-route"></i>
+        </div>
+        <span>Taximoto o envíos intermunicipales</span>
+      </div>
+
+      <div class="service-card">
+        <div class="icon-circle">
+          <i class="fa-solid fa-wallet"></i>
+        </div>
+        <span>Consignaciones</span>
+      </div>
+    </section>
+
+    <!-- Botón Flotante / Principal de Acción -->
+    <div class="action-container">
+      <button class="btn-solicitar">
+        <i class="fa-solid fa-location-dot"></i>
+        <span>Solicitar ahora</span>
+      </button>
     </div>
 
-    <!-- Contenido Principal -->
-    <div class="content">
-      <div class="header">
-        <div class="menu-icon">
-          <i class="fa-solid fa-bars"></i>
-        </div>
-        
-        <div class="logo-container">
-          <div class="logo-title">
-            <i class="fa-solid fa-location-dot"></i> TRANSMIGO
-          </div>
-          <div class="logo-subtitle">MOVEMOS LO QUE NECESITAS</div>
-        </div>
-
-        <div class="welcome-text">
-          <h2>Hola, bienvenido a</h2>
-          <h1>TRANSMIGO</h1>
-          <p>Selecciona el servicio que necesitas<br>y nosotros nos encargamos del resto.</p>
-        </div>
-      </div>
-
-      <!-- Cuadrícula de Opciones/Servicios -->
-      <div class="services-grid">
-        <!-- Opción 1 -->
-        <div class="service-card">
-          <div class="icon-wrapper">
-            <i class="fa-solid fa-motorcycle"></i>
-          </div>
-          <span>Carrera</span>
-        </div>
-
-        <!-- Opción 2 -->
-        <div class="service-card">
-          <div class="icon-wrapper">
-            <i class="fa-solid fa-utensils"></i>
-          </div>
-          <span>Domicilio de comida</span>
-        </div>
-
-        <!-- Opción 3 -->
-        <div class="service-card">
-          <div class="icon-wrapper">
-            <i class="fa-solid fa-box"></i>
-          </div>
-          <span>Domicilio de paquetería</span>
-        </div>
-
-        <!-- Opción 4 -->
-        <div class="service-card">
-          <div class="icon-wrapper">
-            <i class="fa-solid fa-car-side"></i>
-          </div>
-          <span>Transporte tipo taximoto</span>
-        </div>
-
-        <!-- Opción 5 -->
-        <div class="service-card">
-          <div class="icon-wrapper">
-            <i class="fa-solid fa-route"></i>
-          </div>
-          <span>Taximoto o envíos intermunicipales</span>
-        </div>
-
-        <!-- Opción 6 -->
-        <div class="service-card">
-          <div class="icon-wrapper">
-            <i class="fa-solid fa-wallet"></i>
-          </div>
-          <span>Consignaciones</span>
-        </div>
-      </div>
-
-      <!-- Botón de Acción -->
-      <div class="action-container">
-        <button class="btn-submit">
-          <i class="fa-solid fa-location-crosshairs"></i>
-          Solicitar ahora
-        </button>
-      </div>
-    </div>
-
-    <!-- Menú Inferior -->
-    <div class="bottom-nav">
+    <!-- Barra de Navegación Inferior -->
+    <nav class="bottom-nav">
       <a href="#" class="nav-item active">
         <i class="fa-solid fa-house"></i>
         <span>Inicio</span>
@@ -320,15 +97,15 @@
         <span>Pedidos</span>
       </a>
       <a href="#" class="nav-item">
-        <i class="fa-solid fa-location-dot"></i>
+        <i class="fa-solid fa-location-crosshairs"></i>
         <span>Mapa</span>
       </a>
       <a href="#" class="nav-item">
-        <i class="fa-solid fa-user"></i>
+        <i class="fa-regular fa-user"></i>
         <span>Perfil</span>
       </a>
-    </div>
-  </div>
+    </nav>
 
+  </div>
 </body>
 </html>
