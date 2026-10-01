@@ -10,19 +10,16 @@
 
     <title>TRANSMIGO | Logística, Domicilios & Envíos</title>
 
-    <!-- IDENTIDAD DE MARCA -->
+    <!-- IDENTIDAD TRANSMIGO -->
     <meta name="theme-color" content="#0d1117">
-    <meta name="description" content="TRANSMIGO - Plataforma de logística, domicilios y envíos en Tuluá.">
+    <meta name="description" content="TRANSMIGO - Logística, domicilios y envíos en Tuluá.">
 
-    <!-- CONFIGURACIÓN PWA -->
+    <!-- PWA -->
     <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-    <!-- ICONO DE APLICACIÓN -->
-    <meta name="mobile-web-app-capable" content="yes">
-
-    <!-- LEAFLET CSS - MAPAS -->
+    <!-- LEAFLET MAPAS -->
     <link
         rel="stylesheet"
         href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -39,7 +36,7 @@
         rel="stylesheet"
     >
 
-    <!-- ESTILOS PRINCIPALES -->
+    <!-- ESTILOS TRANSMIGO -->
     <link rel="stylesheet" href="styles.css">
 
 </head>
@@ -47,20 +44,16 @@
 <body>
 
     <!-- =====================================================
-         ENCABEZADO PRINCIPAL
+         HEADER TRANSMIGO
          ===================================================== -->
 
     <header class="app-header">
 
         <div class="brand">
 
-            <div class="brand-badge">
-                TM
-            </div>
+            <div class="brand-badge">TM</div>
 
-            <h1>
-                TRANS<span>MIGO</span>
-            </h1>
+            <h1>TRANS<span>MIGO</span></h1>
 
         </div>
 
@@ -76,7 +69,7 @@
 
 
     <!-- =====================================================
-         CONTENEDOR PRINCIPAL DE LA APLICACIÓN
+         CONTENEDOR PRINCIPAL
          ===================================================== -->
 
     <main class="app-container">
@@ -92,11 +85,14 @@
                 ¿Qué necesitas enviar?
             </h2>
 
-            <!-- SERVICIOS -->
+
+            <!-- SERVICIOS DISPONIBLES -->
 
             <div class="services-grid">
 
-                <button class="service-card active" type="button">
+                <button class="service-card active"
+                        type="button"
+                        data-service="domicilio">
 
                     <span class="icon">🛵</span>
 
@@ -104,7 +100,10 @@
 
                 </button>
 
-                <button class="service-card" type="button">
+
+                <button class="service-card"
+                        type="button"
+                        data-service="paqueteria">
 
                     <span class="icon">📦</span>
 
@@ -112,7 +111,10 @@
 
                 </button>
 
-                <button class="service-card" type="button">
+
+                <button class="service-card"
+                        type="button"
+                        data-service="mensajeria">
 
                     <span class="icon">📍</span>
 
@@ -123,13 +125,14 @@
             </div>
 
 
-            <!-- FORMULARIO DE SOLICITUD -->
+            <!-- FORMULARIO DE SERVICIO -->
 
             <div class="form-card">
 
-                <h3 class="section-title">
+                <h2 class="section-title">
                     Datos del servicio
-                </h3>
+                </h2>
+
 
                 <div class="input-group">
 
@@ -173,7 +176,6 @@
                         type="text"
                         id="pickup-address"
                         placeholder="¿Dónde recogemos?"
-                        autocomplete="street-address"
                     >
 
                 </div>
@@ -203,13 +205,13 @@
                     <input
                         type="text"
                         id="service-description"
-                        placeholder="Describe brevemente tu solicitud"
+                        placeholder="Describe tu solicitud"
                     >
 
                 </div>
 
 
-                <button class="btn btn-primary" type="button">
+                <button class="btn btn-primary" id="calculate-service" type="button">
 
                     <span>📍</span>
 
@@ -220,7 +222,7 @@
             </div>
 
 
-            <!-- MAPA -->
+            <!-- MAPA INTERACTIVO -->
 
             <h2 class="section-title">
                 Ubicación del servicio
@@ -233,23 +235,24 @@
             </div>
 
 
-            <!-- RESULTADO DE TARIFA -->
+            <!-- RESULTADO Y TARIFA -->
 
-            <div class="result-card hidden">
+            <div class="result-card hidden" id="service-result">
 
-                <h3 class="section-title">
+                <h2 class="section-title">
                     Resumen del servicio
-                </h3>
+                </h2>
+
 
                 <div class="result-details">
 
                     <div class="detail-item">
 
                         <span class="label">
-                            Distancia
+                            Distancia estimada
                         </span>
 
-                        <span class="value">
+                        <span class="value" id="service-distance">
                             0 km
                         </span>
 
@@ -262,7 +265,7 @@
                             Tarifa estimada
                         </span>
 
-                        <span class="value">
+                        <span class="value" id="service-price">
                             $0
                         </span>
 
@@ -270,7 +273,10 @@
 
                 </div>
 
-                <button class="btn btn-whatsapp" type="button">
+
+                <button class="btn btn-whatsapp"
+                        id="request-whatsapp"
+                        type="button">
 
                     <span>💬</span>
 
@@ -295,25 +301,29 @@
             </h2>
 
 
+            <!-- DISPONIBILIDAD -->
+
             <div class="driver-controls-card">
 
                 <div class="toggle-status">
 
                     <div>
 
-                        <h3>
-                            Disponibilidad
-                        </h3>
+                        <h3>Mi disponibilidad</h3>
 
-                        <p>
-                            Activa o desactiva tu disponibilidad
+                        <p id="driver-status-text">
+                            Actualmente estás desconectado
                         </p>
 
                     </div>
 
+
                     <label class="switch">
 
-                        <input type="checkbox" id="driver-availability">
+                        <input
+                            type="checkbox"
+                            id="driver-availability"
+                        >
 
                         <span class="slider"></span>
 
@@ -324,12 +334,14 @@
             </div>
 
 
+            <!-- PEDIDOS DISPONIBLES -->
+
             <h2 class="section-title">
                 Pedidos disponibles
             </h2>
 
 
-            <div class="orders-feed">
+            <div class="orders-feed" id="orders-feed">
 
                 <div class="empty-feed">
 
@@ -358,6 +370,8 @@
             </h2>
 
 
+            <!-- MÉTRICAS -->
+
             <div class="metrics-grid">
 
                 <div class="metric-card">
@@ -366,7 +380,7 @@
                         Pedidos del día
                     </span>
 
-                    <span class="metric-value">
+                    <span class="metric-value" id="metric-orders">
                         0
                     </span>
 
@@ -379,7 +393,7 @@
                         Domiciliarios activos
                     </span>
 
-                    <span class="metric-value">
+                    <span class="metric-value" id="metric-drivers">
                         0
                     </span>
 
@@ -392,7 +406,7 @@
                         Ingresos del día
                     </span>
 
-                    <span class="metric-value">
+                    <span class="metric-value" id="metric-income">
                         $0
                     </span>
 
@@ -405,9 +419,59 @@
                         Servicios completados
                     </span>
 
-                    <span class="metric-value">
+                    <span class="metric-value" id="metric-completed">
                         0
                     </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- GESTIÓN ADMINISTRATIVA -->
+
+            <h2 class="section-title">
+                Gestión de operaciones
+            </h2>
+
+
+            <div class="form-card">
+
+                <div class="input-group">
+
+                    <label for="admin-search">
+                        Buscar pedido
+                    </label>
+
+                    <input
+                        type="search"
+                        id="admin-search"
+                        placeholder="Número de pedido o cliente"
+                    >
+
+                </div>
+
+
+                <button class="btn btn-primary"
+                        id="admin-search-button"
+                        type="button">
+
+                    🔎 Buscar pedido
+
+                </button>
+
+            </div>
+
+
+            <div class="orders-feed" id="admin-orders-feed">
+
+                <div class="empty-feed">
+
+                    <span>📋</span>
+
+                    <p>
+                        No hay operaciones registradas.
+                    </p>
 
                 </div>
 
@@ -420,7 +484,7 @@
 
 
     <!-- =====================================================
-         NAVEGACIÓN INFERIOR
+         MENÚ INFERIOR ORIGINAL
          ===================================================== -->
 
     <nav class="bottom-nav">
@@ -462,7 +526,7 @@
 
 
     <!-- =====================================================
-         LIBRERÍA LEAFLET
+         LIBRERÍA DE MAPAS
          ===================================================== -->
 
     <script
@@ -473,7 +537,7 @@
 
 
     <!-- =====================================================
-         MÓDULO PRINCIPAL JAVASCRIPT
+         APLICACIÓN MODULAR TRANSMIGO
          ===================================================== -->
 
     <script type="module" src="js/app.js"></script>
